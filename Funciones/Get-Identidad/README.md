@@ -1,4 +1,7 @@
-# Powershell
-Powershell scripts storage. <br>
-This is where i'll share my scripts, functions, fun facts and little pieces of code. <br>
-This will be mostly in spanish, so feel free to ask for a translation if you don't understand something.
+# Get-Identidad
+
+Selecciona la ultima parte de la identidad, para mostrar con mas prolijidad en los reportes.
+
+Pide y devuelve una variable de tipo String
+
+*Lucas Camilo - 17/12/2012*
