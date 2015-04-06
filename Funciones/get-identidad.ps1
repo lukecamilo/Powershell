@@ -1,4 +1,4 @@
-##################################################################
+ï»¿##################################################################
 ##################################################################
 ##																##
 ##							get-identidad						##
@@ -17,7 +17,7 @@
 
 function get-identidad( [string] $identidadcompleta) 
 {
-	$PIECES=$identidadcompleta.split(“/”) 
+	$PIECES=$identidadcompleta.split("/") 
 	$NUMBEROFPIECES=$PIECES.Count 
 	$FILENAME=$PIECES[$NUMBEROFPIECES-1] 
 	return $FILENAME
