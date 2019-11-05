@@ -1,4 +1,4 @@
-function ConvertFrom-DockerPS ($inStuff){
+function ConvertFrom-DockerPS {
 <#
 	.SYNOPSIS
 		Parses docker ps output to make it more readable
@@ -16,25 +16,33 @@ function ConvertFrom-DockerPS ($inStuff){
 		
 	
 	.NOTES
-		Most of the code was copied from https://www.reddit.com/r/PowerShell/comments/8p09mb/how_to_loop_through_docker_ps_a_with_powershell/ so 
+		The core of the code was taken from https://www.reddit.com/r/PowerShell/comments/8p09mb/how_to_loop_through_docker_ps_a_with_powershell/ so 
 		credits go to reddit user /u/Lee_Dailey (https://www.reddit.com/user/Lee_Dailey/), a great contributor on the powershell subreddit [grin]
+		I've also (forcefully) learned the how's and why's of using advanced functions, and the massive value of the ISE (which i will never use again, heh)
+		Thank you fellow admin for reading this ramblings, and party on!
 
 #>
+	[CmdletBinding()]
+	
+	param(
+		[Parameter(ValueFromPipeline=$true)]$adentro
+	)
+		
+	begin{
+		#Declare the $final helper object
+		$final=@()
+	}
 
+	process{
+		$InStuff = $adentro.Split("`n").Trim("`r")
+		$OutStuff = $InStuff -replace '\s{23,}', ',,' -replace '\s{2,}', ','
+		#Added this to mitigate an issue with formatting on the ugly header
+		if ($OutStuff -like "*IMAGE,COMMAND,*") { $OutStuff= $OutStuff.replace(',,',',')}
+        $final+=$OutStuff
+	}
 
-# this presumes the source is outputting one string per line, not one multi-line string
-$InStuff = $inStuff.Split("`n").Trim("`r")
-
-foreach ($Index in 0..$InStuff.GetUpperBound(0))
-    {
-    # the 1st -replace handles the blank PORTS column
-    $InStuff[$Index] = $InStuff[$Index] -replace '\s{23,}', ',,' -replace '\s{2,}', ','
-    }
-
-$DockerPSA_Objects = $InStuff |
-    ConvertFrom-Csv
-
-$DockerPSA_Objects
-
-
+	end{
+		#Convert it all to CSV and send it back
+		$final | ConvertFrom-Csv  
+	}
 }
